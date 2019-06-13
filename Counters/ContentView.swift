@@ -1,18 +1,27 @@
-//
-//  ContentView.swift
-//  Counters
-//
-//  Created by Petr Šíma on 09/06/2019.
-//  Copyright © 2019 Petr Šíma. All rights reserved.
-//
-
 import SwiftUI
+import Combine
+
+@propertyWrapper struct Wrap<A> {
+    init(initialValue: A) {
+        self.value = value
+    }
+    
+    var value: A
+    
+}
+
+struct Foo {
+    @Wrap var foo: String
+}
+
+
 
 struct ContentView : View {
     var body: some View {
-        Text("Hello World")
+Text("foo")
     }
 }
+
 
 #if DEBUG
 struct ContentView_Previews : PreviewProvider {

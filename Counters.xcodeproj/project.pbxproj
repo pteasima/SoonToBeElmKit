@@ -14,6 +14,7 @@
 		796A42DA22AC89FA003A2A90 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 796A42D922AC89FA003A2A90 /* Preview Assets.xcassets */; };
 		796A42DD22AC89FA003A2A90 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 796A42DB22AC89FA003A2A90 /* LaunchScreen.storyboard */; };
 		796A42E822AC89FA003A2A90 /* CountersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 796A42E722AC89FA003A2A90 /* CountersTests.swift */; };
+		796A42F422AC8A13003A2A90 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 796A42F322AC8A13003A2A90 /* Store.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +39,7 @@
 		796A42E322AC89FA003A2A90 /* CountersTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CountersTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		796A42E722AC89FA003A2A90 /* CountersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountersTests.swift; sourceTree = "<group>"; };
 		796A42E922AC89FA003A2A90 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		796A42F322AC8A13003A2A90 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +81,7 @@
 		796A42CF22AC89F6003A2A90 /* Counters */ = {
 			isa = PBXGroup;
 			children = (
+				796A42F222AC8A09003A2A90 /* Store */,
 				796A42D022AC89F6003A2A90 /* AppDelegate.swift */,
 				796A42D222AC89F6003A2A90 /* SceneDelegate.swift */,
 				796A42D422AC89F6003A2A90 /* ContentView.swift */,
@@ -105,6 +108,14 @@
 				796A42E922AC89FA003A2A90 /* Info.plist */,
 			);
 			path = CountersTests;
+			sourceTree = "<group>";
+		};
+		796A42F222AC8A09003A2A90 /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				796A42F322AC8A13003A2A90 /* Store.swift */,
+			);
+			path = Store;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -211,6 +222,7 @@
 				796A42D122AC89F6003A2A90 /* AppDelegate.swift in Sources */,
 				796A42D322AC89F6003A2A90 /* SceneDelegate.swift in Sources */,
 				796A42D522AC89F6003A2A90 /* ContentView.swift in Sources */,
+				796A42F422AC8A13003A2A90 /* Store.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

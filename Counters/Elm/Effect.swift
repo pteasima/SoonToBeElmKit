@@ -1,6 +1,7 @@
 import Foundation
 import Combine
 
+
 protocol Effect {
     associatedtype Output
     
@@ -14,7 +15,7 @@ struct Get: Effect {
     
     
     static var perform: (Self) -> AnyPublisher<(Data?, URLResponse?, Error?), Never> = { params in
-        var task: URLSessionDataTask?
+        /*var task: URLSessionDataTask?
         return Publishers.Future { callback in
             task = URLSession.shared.dataTask(with: params.url) { data, response, error in
                 callback(.success((data, response, error)))
@@ -24,7 +25,7 @@ struct Get: Effect {
             .handleEvents(receiveCancel: {
                 task?.cancel()
             })
-            .eraseToAnyPublisher()
+            .eraseToAnyPublisher()*/
     }
 }
 

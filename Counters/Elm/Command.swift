@@ -9,9 +9,13 @@ protocol Effect {
     static var perform: (Params) -> AnyPublisher<Action, Never> { get }
 }
 
+func batch<E1, E2>(_ e1: E1, _ e2: E2) -> AnyEffect<E1.Action> where E1: Effect, E2: Effect, E1.Action == E2.Action {
+    return AnyEffect(perform: Publishers.Merge(e1.perform, e2.perform).eraseToAnyPublisher())
+}
+
 extension Effect {
-    func eraseToAnyEffect() -> AnyEffect<Action> {
-        AnyEffect(perform: Self.perform(self.params))
+    var perform: AnyPublisher<Action, Never> {
+        return Self.perform(self.params).eraseToAnyPublisher()
     }
 }
 
@@ -52,5 +56,8 @@ let playground: () -> Void = {
         .none
     })
     
-    let anyG = g.eraseToAnyEffect()
+    let b = batch(
+        g,
+        g
+    )
 }

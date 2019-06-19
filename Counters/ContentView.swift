@@ -1,7 +1,8 @@
 import SwiftUI
 import Combine
 
-final class Store<State>: BindableObject {
+typealias Store<State, Action> = ObjectBinding<ViewStore<State>>
+final class ViewStore<State>: BindableObject {
     let didChange = PassthroughSubject<(), Never>()
     init(state: State) {
         self.state = state
@@ -17,13 +18,13 @@ final class Store<State>: BindableObject {
 // this isnt very Elm-y (yet!), its just a View that has a single Store
 @dynamicMemberLookup protocol ElmView: View {
     associatedtype State
-    var store: ObjectBinding<Store<State>> { get }
+    var store: ObjectBinding<ViewStore<State>> { get }
     
     subscript<Subject>(dynamicMember keyPath: WritableKeyPath<State, Subject>) -> Binding<Subject> { get }
 }
 extension ElmView {
     subscript<Subject>(dynamicMember keyPath: WritableKeyPath<State, Subject>) -> Binding<Subject> {
-        let storeToState: ReferenceWritableKeyPath<Store<State>, State> = \.state
+        let storeToState: ReferenceWritableKeyPath<ViewStore<State>, State> = \.state
         let storeToSubject = storeToState.appending(path: keyPath)
         return Binding(getValue: {
             self.store.delegateValue[dynamicMember: storeToSubject].value
@@ -40,16 +41,14 @@ enum ExampleApp {
     struct State {
         var isOn: Bool = true
     }
-    static let theStore = Store(state: State())
+    static let theStore = ViewStore(state: State())
 }
 
 struct ContentView : ElmView {
-    //we have one store per app, but each View needs its own ObjectBinding
-    let store = ObjectBinding(initialValue: ExampleApp.theStore)
+    let store: Store<ExampleApp.State, Never>
     
     var body: some View {
         List(0...100) { _ in
-            //Bindings to all State properties are accessible on `self`
             Toggle(isOn: self.isOn.animation()) {
                 Text("is it on?")
             }
@@ -61,7 +60,7 @@ struct ContentView : ElmView {
 #if DEBUG
 struct ContentView_Previews : PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView(store: ObjectBinding(initialValue: ExampleApp.theStore))
     }
 }
 #endif

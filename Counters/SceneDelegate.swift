@@ -22,7 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use a UIHostingController as window root view controller
         let window = UIWindow(frame: UIScreen.main.bounds)
         window.rootViewController = UIHostingController(rootView:
-            ContentView()
+            ContentView(store: ObjectBinding(initialValue: ExampleApp.theStore))
         )
         self.window = window
         window.makeKeyAndVisible()

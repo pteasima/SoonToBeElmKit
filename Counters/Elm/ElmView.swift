@@ -23,4 +23,16 @@ extension ElmView {
             })
         }
     }
+    
+    subscript<Subject>(dynamicMember keyPath: WritableKeyPath<State, Subject>) -> (@escaping (Subject, Transaction?) -> Action) -> Binding<Subject> {
+        let storeToState: ReferenceWritableKeyPath<ViewStore<State, Action>, State> = \.state
+        let storeToSubject = storeToState.appending(path: keyPath)
+        return { transform in
+            Binding(getValue: {
+                self.store.delegateValue[dynamicMember: storeToSubject].value
+            }, setValue: { newValue, transaction in
+                self.dispatch(transform(newValue, transaction))
+            })
+        }
+    }
 }

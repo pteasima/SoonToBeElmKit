@@ -9,6 +9,7 @@ enum ExampleApp {
     enum Action {
         case none
         case toggle(Bool)
+        case toggleWithTransaction(Bool, Transaction?)
         case onDrag(Double)
         case tick
     }
@@ -17,13 +18,18 @@ enum ExampleApp {
         switch action {
         case .none:
             return [
-                .dontRerender
+                .dontRerender // this means the toggle that triggered it will stay flipped to the wrong state
             ]
         case .toggle(let newValue):
             state.isOn = newValue
             return [
-                .setTransaction(Transaction(animation: .default))
+//                .setTransaction(Transaction(animation: .default))
             ]
+        case let .toggleWithTransaction(newValue, transaction):
+            state.isOn = newValue
+            return [
+                transaction.map { .setTransaction($0) }
+                ].compactMap { $0 }
         case .onDrag(let newX):
             state.dragged = newX
             return []
@@ -70,8 +76,8 @@ struct V2: ElmView {
             Toggle(isOn: self.isOn { .toggle($0)  }) {
                 Text("v2 is it on?")
             }
-            Toggle(isOn: self.isOn { .toggle($0) }) {
-                Text("v22 is it on?")
+            Toggle(isOn: self.isOn { .toggleWithTransaction($0,$1) }.animation()) {
+                Text("here, the view supplies the animation")
             }
 //            Text("\(self.dragged.value)")
         }

@@ -11,11 +11,13 @@ import UIKit
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
-
+    var program: Program<ExampleApp.State, ExampleApp.Action>!
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-//        playground()
+        
+        program = Program(initialState: ExampleApp.State(), initialCommands: [], update: ExampleApp.update, subscriptions: ExampleApp.subscriptions, effects: Effects())
+        
         return true
     }
 

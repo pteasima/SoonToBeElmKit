@@ -81,6 +81,26 @@ enum ExampleApp {
         case toggle(Bool)
         case onDrag(Double)
     }
+    
+    static func update(state: inout State, action: Action) -> [Command<Effects, Action, State>] {
+        switch action {
+        case .none:
+            return [
+//                Command(\.http.get, URL(string: "www.google.com")!) { _ in .increment }
+            ]
+        case .toggle(let newValue):
+            state.isOn = newValue
+            return []
+        case .onDrag(let newX):
+            state.dragged = newX
+            return []
+        }
+    }
+    
+    static func subscriptions(state: State) -> [Subscription<Effects, Action>] {
+        return []
+    }
+    
     static let theStore = ViewStore<State, Action>(state: State())
 }
 

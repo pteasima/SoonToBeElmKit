@@ -14,6 +14,7 @@
 		796A42DA22AC89FA003A2A90 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 796A42D922AC89FA003A2A90 /* Preview Assets.xcassets */; };
 		796A42DD22AC89FA003A2A90 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 796A42DB22AC89FA003A2A90 /* LaunchScreen.storyboard */; };
 		796A42E822AC89FA003A2A90 /* CountersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 796A42E722AC89FA003A2A90 /* CountersTests.swift */; };
+		798C1E6322BBA42B00E39BA3 /* Effects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 798C1E6222BBA42B00E39BA3 /* Effects.swift */; };
 		79924D6022B7FFBE008E5FD5 /* Effect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79924D5F22B7FFBE008E5FD5 /* Effect.swift */; };
 		79924D6222B81D49008E5FD5 /* Program.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79924D6122B81D49008E5FD5 /* Program.swift */; };
 		79C8BAEA22BAB647009381D4 /* Ideas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C8BAE922BAB647009381D4 /* Ideas.swift */; };
@@ -41,6 +42,7 @@
 		796A42E322AC89FA003A2A90 /* CountersTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CountersTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		796A42E722AC89FA003A2A90 /* CountersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountersTests.swift; sourceTree = "<group>"; };
 		796A42E922AC89FA003A2A90 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		798C1E6222BBA42B00E39BA3 /* Effects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Effects.swift; sourceTree = "<group>"; };
 		79924D5F22B7FFBE008E5FD5 /* Effect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Effect.swift; sourceTree = "<group>"; };
 		79924D6122B81D49008E5FD5 /* Program.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Program.swift; sourceTree = "<group>"; };
 		79C8BAE922BAB647009381D4 /* Ideas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ideas.swift; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 		796A42CF22AC89F6003A2A90 /* Counters */ = {
 			isa = PBXGroup;
 			children = (
+				798C1E6122BBA41700E39BA3 /* Effects */,
 				79E72AFA22B79BD60085432F /* Elm */,
 				796A42D022AC89F6003A2A90 /* AppDelegate.swift */,
 				796A42D222AC89F6003A2A90 /* SceneDelegate.swift */,
@@ -113,6 +116,14 @@
 				796A42E922AC89FA003A2A90 /* Info.plist */,
 			);
 			path = CountersTests;
+			sourceTree = "<group>";
+		};
+		798C1E6122BBA41700E39BA3 /* Effects */ = {
+			isa = PBXGroup;
+			children = (
+				798C1E6222BBA42B00E39BA3 /* Effects.swift */,
+			);
+			path = Effects;
 			sourceTree = "<group>";
 		};
 		79E72AFA22B79BD60085432F /* Elm */ = {
@@ -226,6 +237,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				79924D6222B81D49008E5FD5 /* Program.swift in Sources */,
+				798C1E6322BBA42B00E39BA3 /* Effects.swift in Sources */,
 				79924D6022B7FFBE008E5FD5 /* Effect.swift in Sources */,
 				796A42D122AC89F6003A2A90 /* AppDelegate.swift in Sources */,
 				796A42D322AC89F6003A2A90 /* SceneDelegate.swift in Sources */,

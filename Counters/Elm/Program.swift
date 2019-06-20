@@ -3,7 +3,7 @@ import Combine
 import SwiftUI
 
 final class Program<State, Action, Effects> {
-    let viewStore: ObjectBinding<ViewStore<State, Action>>
+    var viewStore: Store<State,Action>!
     var rerender = true
     var transaction: Transaction?
     
@@ -16,7 +16,10 @@ final class Program<State, Action, Effects> {
     private var commandCancellables: [AnyCancellable] = []
     init(initialState: State, initialCommands: [Command<State, Action, Effects>], update: @escaping (inout State, Action) -> [Command<State, Action, Effects>], subscriptions: @escaping (State) -> [Subscription<Effects, Action>], effects: Effects) {
         state = initialState
-        viewStore = { fatalError() }()
+        viewStore = Store(initialValue: ViewStore(state: initialState, dispatch: { [weak self] in
+            guard let self = self else { assertionFailure("dispatching from view onto a dead store"); return }
+            self.dispatch($0)
+        }))
         
         
         dispatch = { [weak self] action in

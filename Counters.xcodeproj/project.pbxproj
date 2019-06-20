@@ -17,6 +17,7 @@
 		798C1E6322BBA42B00E39BA3 /* Effects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 798C1E6222BBA42B00E39BA3 /* Effects.swift */; };
 		79924D6022B7FFBE008E5FD5 /* Effect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79924D5F22B7FFBE008E5FD5 /* Effect.swift */; };
 		79924D6222B81D49008E5FD5 /* Program.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79924D6122B81D49008E5FD5 /* Program.swift */; };
+		79A2117922BC1C05004D987E /* ViewStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79A2117822BC1C05004D987E /* ViewStore.swift */; };
 		79C8BAEA22BAB647009381D4 /* Ideas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C8BAE922BAB647009381D4 /* Ideas.swift */; };
 /* End PBXBuildFile section */
 
@@ -45,6 +46,7 @@
 		798C1E6222BBA42B00E39BA3 /* Effects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Effects.swift; sourceTree = "<group>"; };
 		79924D5F22B7FFBE008E5FD5 /* Effect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Effect.swift; sourceTree = "<group>"; };
 		79924D6122B81D49008E5FD5 /* Program.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Program.swift; sourceTree = "<group>"; };
+		79A2117822BC1C05004D987E /* ViewStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewStore.swift; sourceTree = "<group>"; };
 		79C8BAE922BAB647009381D4 /* Ideas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ideas.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -131,6 +133,7 @@
 			children = (
 				79924D5F22B7FFBE008E5FD5 /* Effect.swift */,
 				79924D6122B81D49008E5FD5 /* Program.swift */,
+				79A2117822BC1C05004D987E /* ViewStore.swift */,
 			);
 			path = Elm;
 			sourceTree = "<group>";
@@ -238,6 +241,7 @@
 			files = (
 				79924D6222B81D49008E5FD5 /* Program.swift in Sources */,
 				798C1E6322BBA42B00E39BA3 /* Effects.swift in Sources */,
+				79A2117922BC1C05004D987E /* ViewStore.swift in Sources */,
 				79924D6022B7FFBE008E5FD5 /* Effect.swift in Sources */,
 				796A42D122AC89F6003A2A90 /* AppDelegate.swift in Sources */,
 				796A42D322AC89F6003A2A90 /* SceneDelegate.swift in Sources */,

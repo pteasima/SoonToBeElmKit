@@ -82,7 +82,7 @@ enum ExampleApp {
         case onDrag(Double)
     }
     
-    static func update(state: inout State, action: Action) -> [Command<Effects, Action, State>] {
+    static func update(state: inout State, action: Action) -> [Command<State, Action, Effects>] {
         switch action {
         case .none:
             return [

@@ -23,9 +23,10 @@ struct HTTP {
 
 //TODO: explore how we can use StaticMember to hide the cases but still keep leading dot syntax
 // alternativelly, consider hiding the cases in a RawCommand type thats only accessible to Program
-enum Command<Effects, Action, State> {
+//TODO: nest Command in Program since it has all the same generic params?
+enum Command<State, Action, Effects> {
     case effect((Effects) -> AnyPublisher<Action, Never>) //external effect
-    case `internal`((Program<State, Action>) -> Void) //used to modify internal state of the Program, e.g. to disable rerender or set Transaction for rerender
+    case `internal`((Program<State, Action, Effects>) -> Void) //used to modify internal state of the Program, e.g. to disable rerender or set Transaction for rerender
     
     init<Input, Output>(_ keyPath: KeyPath<Effects, (Input) -> AnyPublisher<Output, Never>>, _ input: Input, _ transform: @escaping (Output) -> Action) {
         self = .effect { effects in

@@ -47,11 +47,13 @@ enum ExampleApp {
         switch action {
         case .none:
             return [
-//                Command(\.http.get, URL(string: "www.google.com")!) { _ in .increment }
+                .dontRerender
             ]
         case .toggle(let newValue):
             state.isOn = newValue
-            return []
+            return [
+                .setTransaction(Transaction(animation: .default))
+            ]
         case .onDrag(let newX):
             state.dragged = newX
             return []

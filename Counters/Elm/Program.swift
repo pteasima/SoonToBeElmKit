@@ -4,102 +4,85 @@ import SwiftUI
 
 final class Program<State, Action, Effects> {
     let viewStore: ObjectBinding<ViewStore<State, Action>>
-    @ReadOnce var rerender = true
-    @ReadOnce var transaction: Transaction? = nil
+    var rerender = true
+    var transaction: Transaction?
     
     private var state: State
+    private var isIdle = true
     private var queue : [Action] = []
     private var dispatch: ((Action) -> Void)!
-    private var recursiveDispatch: ((Action) -> Void)!
-    private var subscriptions: [(Subscription<Effects, Action>, AnyCancellable)] = []//subscriptions we've already fired and may want to cancel
+    private var subscriptions: [(subscription: Subscription<Effects, Action>, cancellable: AnyCancellable)] = []//subscriptions we've already fired and may want to cancel
     
-    
+    private var commandCancellables: [AnyCancellable] = []
     init(initialState: State, initialCommands: [Command<State, Action, Effects>], update: @escaping (inout State, Action) -> [Command<State, Action, Effects>], subscriptions: @escaping (State) -> [Subscription<Effects, Action>], effects: Effects) {
         state = initialState
         viewStore = { fatalError() }()
         
-        recursiveDispatch = { [unowned self] action in
-            assert(!self.queue.isEmpty) //recursiveDispatch should only be call when queue isnt empty
-            self.queue.append(action) //just append to queue, it will be processed by the while loop in dispatch
-        }
-        dispatch = { [unowned self] action in
-            assert(self.queue.isEmpty) //dispatch should only be called when idle
+        
+        dispatch = { [weak self] action in
+            guard let self = self else { assertionFailure("if I properly managed all cancellables, a dispatch on a dead Program would never happen"); return }
             self.queue.append(action)
-            while !self.queue.isEmpty {
-                let currentAction = self.queue.first!
-                let cmds = update(&self.state, currentAction)
-                cmds.forEach {
-                    switch $0 {
-                    case let .internal(modify):
-                        modify(self)
-                    case let .effect(effect):
-                        //TODO: dont ignore the cancellables, store them and cancel on deinit. Then we can replace weak below with unowned
-                        _ = effect(effects).sink { [weak self] in
-                            guard let self = self else { return }
-                            if self.queue.isEmpty {
-                                self.dispatch($0)
-                            } else {
-                                self.recursiveDispatch($0)
-                            }
+            if self.isIdle { //only start the processing while-loop once. If not idle, then this is a recursive dispatch and we just need to enqueue it.
+                self.isIdle = false
+                defer {
+                    self.isIdle = true
+                    //these may have been modified by .internal Commands. Reset them when done
+                    self.rerender = true
+                    self.transaction = nil
+                }
+                while !self.queue.isEmpty {
+                    let currentAction = self.queue.removeFirst()
+                    let cmds = update(&self.state, currentAction)
+                    cmds.forEach {
+                        switch $0 {
+                        case let .internal(modify):
+                            modify(self)
+                        case let .effect(effect):
+                            var cancellable: AnyCancellable?
+                            cancellable = AnyCancellable(effect(effects).sink(receiveCompletion: { [weak self] _ in
+                                //commandCancellables shouldnt grow indefinitelly, so we remove the cancellable on completion
+                                // TODO: removeFirst(where:)
+                                self?.commandCancellables.removeAll { $0 === cancellable }
+                            },receiveValue: self.dispatch))
+                            self.commandCancellables.append(cancellable!)
+                        }
+                    }
+                    let subs = subscriptions(self.state)
+                    // we cant do a collection.difference here, since that can produce .inserts and .removes for reordering
+                    // we dont care about order, just cancel and remove old ones and append new ones
+                    self.subscriptions.forEach { oldSub in
+                        if !subs.contains(oldSub.subscription) {
+                            oldSub.cancellable.cancel()
+                            // TODO: removeFirst(where:)
+                            self.subscriptions.removeAll { $0.subscription == oldSub.subscription }
+                        }
+                    }
+                    subs.forEach { newSub in
+                        if !self.subscriptions.contains(where: { $0.subscription == newSub }) {
+                            let cancellable = AnyCancellable(newSub.perform(effects).sink(receiveValue: self.dispatch))
+                            self.subscriptions.append((newSub, cancellable))
                         }
                     }
                 }
-                self.queue.removeFirst()
-            }
-            assert(self.queue.isEmpty) // we got here so everything should be processed.
-            
-            //we only fire subscriptions once all recursive dispatches from commands have been processed. No point firing subscriptions for the intermediate states. This is a design decision and doing otherwise could change the Program's behavior (when we have cold subscriptions that dispatch immediately)
-            let subs = subscriptions(self.state)
-            let subsDiff = self.subscriptions.map { $0.0 }.difference(from: subs)
-            subsDiff.forEach { change in
-                switch change {
-                case let .insert(offset: offset, element: element, associatedWith: associatedWith):
-                    break
-//                    self.subscriptions.insert(element, at: <#T##Int#>)
-                case let .remove(offset: offset, element: element, associatedWith: associatedWith):
-                    break
+                
+                if self.rerender {
+                    // update the view
+                    let storeToState: ReferenceWritableKeyPath<ViewStore<State, Action>, State> = \.state
+                    if let transaction = self.transaction {
+                        self.viewStore.delegateValue[dynamicMember: storeToState].transaction(transaction).value = self.state
+                    } else {
+                        self.viewStore.delegateValue[dynamicMember: storeToState].value = self.state
+                    }
+                    
                 }
+                
             }
-//            subs.forEach {
-//                _ = $0.perform(effects).sink { [weak self] in
-//                    guard let self = self else { return }
-//                    if self.queue.isEmpty {
-//                        self.dispatch($0)
-//                    } else {
-//                        self.recursiveDispatch($0)
-//                    }
-//                }
-//            }
             
             
         }
     }
 }
 
-// a property that flips back to its default value when it is read
-// TODO: does this have proper value semantics with the class inside? And do we even care?
-@propertyWrapper struct ReadOnce<Value> {
-    init(initialValue: Value) {
-        defaultValue = initialValue
-        box = ValueBox(value: initialValue)
-    }
-    private let defaultValue: Value
-    final class ValueBox {
-        init(value: Value) { self.value = value }
-        var value: Value
-    }
-    private var box: ValueBox
-    var value: Value {
-        get {
-            let result = box.value
-            box.value = defaultValue
-            return result
-        }
-        set {
-            box.value = newValue
-        }
-    }
-}
 //enum App {
 //    struct State {
 //        var value: Int = 42

@@ -18,6 +18,7 @@
 		79924D6022B7FFBE008E5FD5 /* Effect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79924D5F22B7FFBE008E5FD5 /* Effect.swift */; };
 		79924D6222B81D49008E5FD5 /* Program.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79924D6122B81D49008E5FD5 /* Program.swift */; };
 		79A2117922BC1C05004D987E /* ViewStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79A2117822BC1C05004D987E /* ViewStore.swift */; };
+		79A2117B22BC2085004D987E /* ElmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79A2117A22BC2085004D987E /* ElmView.swift */; };
 		79C8BAEA22BAB647009381D4 /* Ideas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C8BAE922BAB647009381D4 /* Ideas.swift */; };
 /* End PBXBuildFile section */
 
@@ -47,6 +48,7 @@
 		79924D5F22B7FFBE008E5FD5 /* Effect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Effect.swift; sourceTree = "<group>"; };
 		79924D6122B81D49008E5FD5 /* Program.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Program.swift; sourceTree = "<group>"; };
 		79A2117822BC1C05004D987E /* ViewStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewStore.swift; sourceTree = "<group>"; };
+		79A2117A22BC2085004D987E /* ElmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElmView.swift; sourceTree = "<group>"; };
 		79C8BAE922BAB647009381D4 /* Ideas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ideas.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -134,6 +136,7 @@
 				79924D5F22B7FFBE008E5FD5 /* Effect.swift */,
 				79924D6122B81D49008E5FD5 /* Program.swift */,
 				79A2117822BC1C05004D987E /* ViewStore.swift */,
+				79A2117A22BC2085004D987E /* ElmView.swift */,
 			);
 			path = Elm;
 			sourceTree = "<group>";
@@ -241,6 +244,7 @@
 			files = (
 				79924D6222B81D49008E5FD5 /* Program.swift in Sources */,
 				798C1E6322BBA42B00E39BA3 /* Effects.swift in Sources */,
+				79A2117B22BC2085004D987E /* ElmView.swift in Sources */,
 				79A2117922BC1C05004D987E /* ViewStore.swift in Sources */,
 				79924D6022B7FFBE008E5FD5 /* Effect.swift in Sources */,
 				796A42D122AC89F6003A2A90 /* AppDelegate.swift in Sources */,

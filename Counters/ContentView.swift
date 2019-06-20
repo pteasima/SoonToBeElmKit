@@ -1,37 +1,6 @@
 import SwiftUI
 import Combine
 
-@dynamicMemberLookup protocol ElmView: View {
-    associatedtype State
-    associatedtype Action
-    var store: ObjectBinding<ViewStore<State, Action>> { get }
-    
-    subscript<Subject>(dynamicMember keyPath: WritableKeyPath<State, Subject>) -> (@escaping (Subject) -> Action) -> Binding<Subject> { get }
-}
-extension ElmView {
-    func dispatch(_ action: Action) {
-        store.value.dispatch(action)
-    }
-    
-    subscript<Subject>(dynamicMember keyPath: WritableKeyPath<State, Subject>) -> (@escaping (Subject) -> Action) -> Binding<Subject> {
-        let storeToState: ReferenceWritableKeyPath<ViewStore<State, Action>, State> = \.state
-        let storeToSubject = storeToState.appending(path: keyPath)
-        return { transform in
-            Binding(getValue: {
-            self.store.delegateValue[dynamicMember: storeToSubject].value
-            }, setValue: { newValue, transaction in
-                self.dispatch(transform(newValue))
-                //without `transaction`, animated Bindings wouldnt animate. Using transaction like this seems to be the right way to "compose Bindings"
-//                self.store.delegateValue[dynamicMember: storeToSubject].transaction(transaction).value = newValue
-//                self.store.delegateValue[dynamicMember: storeToState].transaction(transaction).value = ExampleApp.State(isOn: newValue as! Bool) as! State
-        })
-            
-        }
-        
-        
-    }
-}
-
 enum ExampleApp {
     struct State {
         var isOn: Bool = true
@@ -41,6 +10,7 @@ enum ExampleApp {
         case none
         case toggle(Bool)
         case onDrag(Double)
+        case tick
     }
     
     static func update(state: inout State, action: Action) -> [Command<State, Action, Effects>] {
@@ -57,11 +27,21 @@ enum ExampleApp {
         case .onDrag(let newX):
             state.dragged = newX
             return []
+        case .tick:
+            state.isOn.toggle()
+            return [
+                .setTransaction(Transaction(animation: .default))
+            ]
         }
     }
     
     static func subscriptions(state: State) -> [Subscription<Effects, Action>] {
-        return []
+        return [.init(\.clock.repeatedTimer, 5, \.tick)]
+    }
+}
+extension Date {
+    var tick: ExampleApp.Action {
+        .tick
     }
 }
 
@@ -87,10 +67,10 @@ struct V2: ElmView {
     var body: some View {
         VStack {
 //            Slider(value: self.sliderValue { _ in .none })
-            Toggle(isOn: self.isOn { .toggle($0)  }.animation()) {
+            Toggle(isOn: self.isOn { .toggle($0)  }) {
                 Text("v2 is it on?")
             }
-            Toggle(isOn: self.isOn { .toggle($0) }.animation()) {
+            Toggle(isOn: self.isOn { .toggle($0) }) {
                 Text("v22 is it on?")
             }
 //            Text("\(self.dragged.value)")

@@ -2,24 +2,7 @@ import Foundation
 import Combine
 import SwiftUI
 
-struct Effects {
-    var http: HTTP = .init()
-}
-struct HTTP {
-    var get: (URL) -> AnyPublisher<Data, Never> = { url in
-        var task: URLSessionDataTask?
-        return Publishers.Future { callback in
-            task = URLSession.shared.dataTask(with: url) { data, response, error in
-                callback(.success(data!))
-            }
-            task?.resume()
-            }
-            .handleEvents(receiveCancel: {
-                task?.cancel()
-            })
-            .eraseToAnyPublisher()
-    }
-}
+//TODO: support Effects with mupliple params (just needs lots of overloads)
 
 //TODO: explore how we can use StaticMember to hide the cases but still keep leading dot syntax
 // alternativelly, consider hiding the cases in a RawCommand type thats only accessible to Program
